@@ -1,0 +1,40 @@
+.sidebar {
+    width: 200px;
+    height: 100vh;
+    background-color: #1c1c1c;
+    color: white;
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #333;
+  }
+  
+  .menu {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .menu-item {
+    cursor: pointer;
+    padding: 10px;
+    background-color: #34495e;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .menu-item:hover {
+    background-color: #3d566e;
+  }
+  
+  .submenu {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+  
+  .submenu-item {
+    padding: 5px;
+    background-color: #3d566e;
+    margin-bottom: 5px;
+    border-radius: 5px;
+  }
+  
