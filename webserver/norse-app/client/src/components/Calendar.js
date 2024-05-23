@@ -11,6 +11,8 @@ const Calendar = ({ initialMonth, initialYear, data, onDayClick }) => {
   const [month, setMonth] = useState(initialMonth);
   const [year, setYear] = useState(initialYear);
 
+  console.log(data)
+
   const getDaysInMonth = (month, year) => {
     return new Date(year, month + 1, 0).getDate();
   };

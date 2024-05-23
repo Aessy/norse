@@ -18,11 +18,13 @@ const fetchFlightsFailure = (error) => ({
 });
 
 export const fetchFlights = () => {
+  console.log("Fetching flights")
   return async (dispatch) => {
     dispatch(fetchFlightsRequest());
     try {
-      const response = await fetch('/flights');
+      const response = await fetch('http://localhost:5000/flights');
       const data = await response.json();
+      console.log(data)
       dispatch(fetchFlightsSuccess(data));
     } catch (error) {
       dispatch(fetchFlightsFailure(error));

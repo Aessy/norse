@@ -126,8 +126,7 @@ def connect_mongo():
     except Exception as e:
         print(e)
 
-    col = client["norse"]["norsedata"]
-    return col
+    return client["norse"]
 
 def is_token_timeout(payload):
     if 'errors' in jsn:
@@ -204,18 +203,17 @@ def get_fairs(start, end, token, origin, destination):
     return jsn
 
 def main():
-    col = connect_mongo()
+    db = connect_mongo()
 
     token = create_token()
 
     origin = "OSL"
     destination = "BKK"
 
-    db_coll = origin + destination
-
-    db_fair = col[db_coll]
+    prices = db["prices"]
 
     query_time = datetime.datetime.now(tz=datetime.timezone.utc)
+    update_operations = []
     for month in months:
         start = "2024-"+month["start"]
         end = "2024-"+month["end"]
@@ -226,21 +224,31 @@ def main():
             print(fairs["errors"])
             return
 
+        jsn_doc = {}
 
         economy_fairs = fairs["data"][0]["cabins"]
 
         economy = getFairs(economy_fairs, "Economy")
-        #premium = getFairs(fairs["data"][0], "Premium")
 
-        db_economy = db_fair["economy"]
         for fare in economy["lowFareAmounts"]:
             departure_date = fare["departureDate"]
-            db_departure_date = db_economy[departure_date]
-
             fare["timestamp"] = query_time
-            db_departure_date.insert_one(fare)
-        
 
+            jsn_doc["origin"] = origin
+            jsn_doc["destination"] = destination
+            jsn_doc["date"] = departure_date
+            
+            prices.update_one(
+                    { "origin": origin, "destination" : destination, "date": departure_date},
+                    {
+                        "$push": {
+                            "prices": {
+                                "collection_time": query_time,
+                                "economy" : fare,
+                            }
+                        }
+                    },
+                    upsert=True)
 
 
 if __name__ == '__main__':
