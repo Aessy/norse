@@ -7,8 +7,6 @@ from pymongo.server_api import ServerApi
 
 def getFairs(cabins, name):
     for cabin in cabins:
-        print("\n\n\n")
-        print(cabin)
         if cabin["cabinName"] == name:
             return cabin
     return {}
@@ -237,18 +235,34 @@ def main():
             jsn_doc["origin"] = origin
             jsn_doc["destination"] = destination
             jsn_doc["date"] = departure_date
+
+            current = prices.find_one({"origin": origin, "destination" : destination, "date": departure_date})
+
+            new_price = False
+
+            if current != None:
+                prices_size = str(len(current["prices"]) -1)
+                if current["prices"][-1]["economy"]["fareTotal"] == fare["fareTotal"]:
+                    print("Same price, just updating the current row")
+                    db.prices.update_one({"origin" : origin, "destination" : destination, "date" : departure_date}, {"$set" : {"prices." + prices_size : {"collection_time": query_time, "economy" : fare}}}, upsert=True)
+                else:
+                    new_price = True
+            else:
+                new_price = True
             
-            prices.update_one(
-                    { "origin": origin, "destination" : destination, "date": departure_date},
-                    {
-                        "$push": {
-                            "prices": {
-                                "collection_time": query_time,
-                                "economy" : fare,
+            if new_price:
+                print("New price addign entry")
+                prices.update_one(
+                        { "origin": origin, "destination" : destination, "date": departure_date},
+                        {
+                            "$push": {
+                                "prices": {
+                                    "collection_time": query_time,
+                                    "economy" : fare,
+                                }
                             }
-                        }
-                    },
-                    upsert=True)
+                        },
+                        upsert=True)
 
 
 if __name__ == '__main__':

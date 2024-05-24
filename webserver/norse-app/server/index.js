@@ -122,8 +122,7 @@ app.get('/api/price-history', async (req, res) => {
 
     // Execute the aggregation query
     const groupedPrices = await Price.aggregate(pipeline);
-    console.log(groupedPrices[0].prices[0])
-    console.log(groupedPrices[0].prices[1])
+    console.log(groupedPrices)
 
     // Send the grouped price history as JSON
     res.json(groupedPrices);
