@@ -24,33 +24,66 @@ const App = () => {
     15: 'Event 3'
   });
 
-  const handleDayClick = (day) => {
-    dispatch(fetchPriceHistory("OSL", "BKK", "2024-06-01", "2025-06-30"))
-  };
-
   const handleRouteClicked = (route) => {
     dispatch(fetchPriceHistory(route.origin, route.destination, "2024-06-01", "2025-06-30"))
+  }
+
+  const [prices, setPrices] = useState([]);
+
+  const findPrices = (date) => {
+    for(let i = 0; i < priceHistoryState.priceHistory.length; i++) {
+      let history_date = priceHistoryState.priceHistory[i]
+      let new_date = new Date(history_date.departureDate)
+
+      if (new_date.getTime() == date.getTime()) {
+        return history_date
+      }
+    }
+
+    return null
+  }
+
+  const onClickDay = (value, event) => {
+    const new_prices = findPrices(value)
+    if (new_prices != null) {
+      setPrices(new_prices.prices)
+    }
+
+    console.log(prices)
   }
 
   const formatWeekday = (locale, date) => {
 
     let price = null
-    for(let i = 0; i < priceHistoryState.priceHistory.length; i++) {
-      let history_date = priceHistoryState.priceHistory[i]
-      let new_date = new Date(history_date.departureDate)
+    let price_count = null
 
-      console.log(new_date)
-      if (new_date.getTime() == date.getTime()) {
-        console.log("equal")
-        //price = history_date.economy.fareTotal
-        price = history_date.prices.at(-1).fareTotal
+    let diff = 0
+
+    const prices = findPrices(date)
+
+    if (prices != null) {
+        price_count = prices.prices.length
+        price = prices.prices.at(-1).fareTotal
+    }
+
+    if (price != null) {
+      const prices_count = prices.prices.length
+      if (prices_count > 1) {
+        let last_diff = prices.prices.at(prices_count-2)
+        if (last_diff.fareTotal != null) {
+          console.log(last_diff)
+          diff = price - last_diff.fareTotal
+        }
       }
     }
+
     return (
       <div>
         {date.getDate()}
         <p/>
-        {price}
+        NOK  {price}
+        <p/>
+        {diff}
       </div>
     )
   }
@@ -65,10 +98,18 @@ const App = () => {
       </header>
       <div className="Sample__container">
         <main className="Sample__container__content">
-        <Calendar formatDay={formatWeekday}/>
+        <Calendar formatDay={formatWeekday}
+                   onClickDay={onClickDay}/>
         </main>
       </div>
     </div>
+        <ul>
+          {prices.map((item, index) => (
+            <li>
+              {item.timestamp}: {item.fareTotal}
+            </li>
+          ))}
+        </ul>
 
     </div>
   );

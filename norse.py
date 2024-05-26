@@ -95,7 +95,7 @@ def get_fairs(start, end, token, origin, destination):
     access_token = "X-Access-Token=" + token_str
     headers["cookie"] = headers["cookie"] + " " + access_token
 
-    payload = {"childDobs":[],"infantDobs":[],"criteria":[{"origin":"OSL","destination":"BKK","beginDate":start,"endDate":end}],"passengers":[{"type":"ADT","count":1}],"currencyCode":"NOK","promotionCode":"","clearBooking":False}
+    payload = {"childDobs":[],"infantDobs":[],"criteria":[{"origin":origin,"destination":destination,"beginDate":start,"endDate":end}],"passengers":[{"type":"ADT","count":1}],"currencyCode":"NOK","promotionCode":"","clearBooking":False}
 
     r = requests.post(url, data = json.dumps(payload), headers = headers)
 

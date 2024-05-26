@@ -26,9 +26,12 @@ export const fetchPriceHistory = (origin, destination, startDate, endDate) => {
   return async (dispatch) => {
     dispatch(fetchPriceHistoryRequest());
     try {
+      console.log("Asking for new data origin:" + origin + "destination" + destination)
       const response = await axios.get('http://localhost:5000/api/price-history', {
         params: { origin, destination, startDate, endDate }
       });
+      console.log("Got new data")
+      console.log(response.data)
       dispatch(fetchPriceHistorySuccess(response.data));
     } catch (error) {
       dispatch(fetchPriceHistoryFailure(error.message));

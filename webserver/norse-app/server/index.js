@@ -76,7 +76,8 @@ app.get('/api/unique-routes', async(req, res) => {
 app.get('/api/price-history', async (req, res) => {
   const { origin, destination, startDate, endDate } = req.query;
 
-  console.log(req.query)
+  console.log(origin)
+  console.log(destination)
 
   try {
     // Define the aggregation pipeline
@@ -121,6 +122,8 @@ app.get('/api/price-history', async (req, res) => {
       // Sort departure dates in ascending order
       { $sort: { departureDate: 1 } }
     ];
+
+    console.log(pipeline)
 
     // Execute the aggregation query
     const groupedPrices = await Price.aggregate(pipeline);

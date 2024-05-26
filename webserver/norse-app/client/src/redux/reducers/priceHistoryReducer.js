@@ -14,6 +14,7 @@ import {
   
   // Define price history reducer function
   const priceHistoryReducer = (state = initialState, action) => {
+    console.log("Price hostory change")
     switch (action.type) {
       case FETCH_PRICE_HISTORY_REQUEST:
         return {
