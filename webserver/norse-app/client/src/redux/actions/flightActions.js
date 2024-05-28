@@ -22,7 +22,7 @@ export const fetchFlights = () => {
   return async (dispatch) => {
     dispatch(fetchFlightsRequest());
     try {
-      const response = await fetch('http://localhost:5000/flights');
+      const response = await fetch('http://37.27.24.1:8080/flights');
       const data = await response.json();
       console.log(data)
       dispatch(fetchFlightsSuccess(data));

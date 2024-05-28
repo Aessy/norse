@@ -26,7 +26,7 @@ export const fetchRoutes = () => {
   return async (dispatch) => {
     dispatch(fetchRoutesRequest());
     try {
-      const response = await axios.get('http://localhost:5000/api/unique-routes');
+      const response = await axios.get('http://37.27.24.1:8080/api/unique-routes');
       dispatch(fetchRoutesSuccess(response.data));
     } catch (error) {
       dispatch(fetchRoutesFailure(error.message));
