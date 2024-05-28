@@ -25,7 +25,7 @@ const App = () => {
   });
 
   const handleRouteClicked = (route) => {
-    dispatch(fetchPriceHistory(route.origin, route.destination, "2024-06-01", "2025-06-30"))
+    dispatch(fetchPriceHistory(route.origin, route.destination, "2024-05-01", "2025-06-30"))
   }
 
   const [prices, setPrices] = useState([]);
