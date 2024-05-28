@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 
 // Connect to MongoDB
-mongoose.connect('mongodb://jens:test@localhost:27017/norse', {
+mongoose.connect('mongodb://jens:test@127.0.0.1:27017/norse', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
