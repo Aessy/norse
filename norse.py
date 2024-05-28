@@ -3,7 +3,6 @@ import json
 import datetime
 
 from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 
 def getFairs(cabins, name):
     for cabin in cabins:
@@ -24,7 +23,7 @@ months = [{"start": "05-01", "end": "05-31"},
 
 def connect_mongo():
     uri = "mongodb://jens:test@localhost/norse"
-    client = MongoClient(uri, server_api=ServerApi('1'))
+    client = MongoClient(uri)
 
     try:
         client.admin.command('ping')

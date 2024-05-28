@@ -5,14 +5,14 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 
 const app = express();
-const PORT = 5000;
+const PORT = 8080;
 
 app.use(cors());
 app.use(bodyParser.json());
 
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/norse', {
+mongoose.connect('mongodb://jens:test@localhost:27017/norse', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -192,6 +192,6 @@ app.get('/api/data', (req, res) => {
     res.json({ message: 'Hello from the server!' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0" () => {
     console.log(`Server is running on port ${PORT}`);
 });
